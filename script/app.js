@@ -40,6 +40,29 @@ let showResult = queryResponse => {
 	// Toon ook de juiste tijd voor de opkomst van de zon en de zonsondergang.
 	// Hier gaan we een functie oproepen die de zon een bepaalde positie kan geven en dit kan updaten.
 	// Geef deze functie de periode tussen sunrise en sunset mee en het tijdstip van sunrise.
+
+	sunrise = new Date(queryResponse.city.sunrise * 1000 - queryResponse.city.timezone);
+	sunset = new Date(queryResponse.city.sunset * 1000 - queryResponse.city.timezone);
+	console.info(sunrise);
+	console.info(sunset);
+	sunrise = queryResponse.city.sunrise;
+	sunset = queryResponse.city.sunset;
+
+	let seconds = sunset - sunrise;
+	// console.info(seconds);
+
+	let totalMinutes = seconds / 60;
+	// let hours = minutes / 60;
+	// totalMinutes %= 60;
+	// hours %= 60
+
+	// console.info(hours);
+	console.info(totalMinutes);
+
+	sunrise = _parseMillisecondsIntoReadableTime(sunrise);
+	sunset = _parseMillisecondsIntoReadableTime(sunset);
+	console.info(sunrise);
+	console.info(sunset);
 };
 
 // 2 Aan de hand van een longitude en latitude gaan we de yahoo wheater API ophalen.
@@ -48,13 +71,10 @@ let getAPI = async (lat, lon) => {
 	// Met de fetch API proberen we de data op te halen.
 	// Als dat gelukt is, gaan we naar onze showResult functie.
 	const weatherInfo = await fetch(
-		'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=70cd54286effcbf732de91a3deb0e615'
-	).then((response) => response.json())
-	console.log(weatherInfo)
-	sunrise = new Date(weatherInfo.city.sunrise * 1000 - weatherInfo.city.timezone);
-	sunset = new Date(weatherInfo.city.sunset * 1000 - weatherInfo.city.timezone);
-	console.log(sunrise, sunset);
-
+		`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=70cd54286effcbf732de91a3deb0e615&units=metric&lang=nl&cnt=1`
+	).then((response) => response.json());
+	console.log(weatherInfo);
+	showResult(weatherInfo);
 };
 
 document.addEventListener('DOMContentLoaded', function() {

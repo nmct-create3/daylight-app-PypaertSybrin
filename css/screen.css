@@ -10,6 +10,7 @@
     /* colors */
     --global-color-front: #CCE7FF;
     --global-color-back: #0F3557;
+    --global-color-sun: var(--global-color-back);
 
     /* opacity */
     --global-opacity: 0.6 
@@ -32,10 +33,14 @@ html {
     line-height: 1.5;
     font-family: 'Work Sans', sans-serif;
     background-color: var(--global-color-front);
+    color: var(--global-color-back);
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "zero" 1;
+}
+body{
+    margin: 0;
 }
 
 *,
@@ -253,6 +258,7 @@ input::placeholder {
     display: flex;
     gap: .5rem;
     align-items: center;
+    margin: 2rem 0;
 }
 
 /*
@@ -263,6 +269,7 @@ input::placeholder {
 .c-sun{
     width: 22px;
     height: 22px;
+    fill: var(--global-color-sun);
 }
 
 /* .c-logo .c-sun {
@@ -280,20 +287,23 @@ input::placeholder {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    max-width: 25rem;
+    justify-content: space-between;
+    max-width: 29rem;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
+    padding: 0 2rem;
+    /* @media (max-width: 576px) {
+         margin: 0 2rem;
+    } */
+    
 }
 .c-app__summary{
     font-size: 1.75rem;
     line-height: 1.5;
 }
-
-.c-horizon .c-app__summary .c-app__location{
-    position: absolute;
-    bottom: 0;
+.c-app__location{
+    margin-bottom: 2rem;
 }
 
 /*
@@ -365,6 +375,11 @@ input::placeholder {
 */
 
 /* Night version: just switch the light and dark vars */
+
+.is-night{
+    --global-color-front: #0F3557;;
+    --global-color-back: #CCE7FF;
+}
 
 /*------------------------------------*\
 #MEDIA

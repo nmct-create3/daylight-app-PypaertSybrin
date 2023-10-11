@@ -1,3 +1,7 @@
+let sunrise;
+let sunset;
+
+
 // _ = helper functions
 function _parseMillisecondsIntoReadableTime(timestamp) {
 	//Get hours from milliseconds
@@ -39,10 +43,18 @@ let showResult = queryResponse => {
 };
 
 // 2 Aan de hand van een longitude en latitude gaan we de yahoo wheater API ophalen.
-let getAPI = (lat, lon) => {
+let getAPI = async (lat, lon) => {
 	// Eerst bouwen we onze url op
 	// Met de fetch API proberen we de data op te halen.
 	// Als dat gelukt is, gaan we naar onze showResult functie.
+	const weatherInfo = await fetch(
+		'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=70cd54286effcbf732de91a3deb0e615'
+	).then((response) => response.json())
+	console.log(weatherInfo)
+	sunrise = new Date(weatherInfo.city.sunrise * 1000 - weatherInfo.city.timezone);
+	sunset = new Date(weatherInfo.city.sunset * 1000 - weatherInfo.city.timezone);
+	console.log(sunrise, sunset);
+
 };
 
 document.addEventListener('DOMContentLoaded', function() {

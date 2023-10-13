@@ -23,18 +23,33 @@ function _parseMillisecondsIntoReadableTime(timestamp) {
 // 5 TODO: maak updateSun functie
 
 const updateSun = function(aantalMinutenZonOp, totalMinutes){
-	// aantalMinutenZonOp = 660;
+	// aantalMinutenZonOp = 550;
+	// totalMinutes = 600;
 	left = (aantalMinutenZonOp / totalMinutes) * 100;
 	console.info(`${left}%`);
 	if(totalMinutes / 2 > aantalMinutenZonOp){
 		bottom = (aantalMinutenZonOp / (totalMinutes / 2)) * 100;
 	}
 	else{
-		aantalMinutenZonOp -= aantalMinutenZonOp / 2;
-		bottom = 100 - ((aantalMinutenZonOp / (totalMinutes / 2)) * 100);
+		aantalMinutenZonOp = aantalMinutenZonOp - (totalMinutes / 2);
+		totalMinutes = totalMinutes - (totalMinutes / 2)
+		bottom = 100-((aantalMinutenZonOp / totalMinutes) * 100);
 	}
 	console.info(`Procent left: ${left}%`)
 	console.info(`Procent bottom: ${bottom}%`);
+
+	const resterendeMinuten = totalMinutes - aantalMinutenZonOp;
+
+	const uren = Math.floor(resterendeMinuten / 60);
+	const minuten = resterendeMinuten % 60;
+	console.info(uren);
+	console.info(minuten);
+	if(uren < 1){
+		document.querySelector('.js-time-left').innerHTML = `${minuten}`;
+	}
+	else{
+		document.querySelector('.js-time-left').innerHTML = `${uren} hour(s), ${Math.round(minuten)}`;
+	}
 }
 
 // 4 Zet de zon op de juiste plaats en zorg ervoor dat dit iedere minuut gebeurt.
@@ -61,6 +76,7 @@ let placeSunAndStartMoving = (totalMinutes, sunrise) => {
 	// PS.: vergeet weer niet om het resterend aantal minuten te updaten en verhoog het aantal verstreken minuten.
 
 	sun.style.cssText = `bottom: ${bottom}%; left: ${left}%;`
+	sun.setAttribute("data-time", _parseMillisecondsIntoReadableTime(Date.now() / 1000));
 };
 
 // 3 Met de data van de API kunnen we de app opvullen
@@ -107,4 +123,5 @@ let getAPI = async (lat, lon) => {
 document.addEventListener('DOMContentLoaded', function() {
 	// 1 We will query the API with longitude and latitude.
 	getAPI(50.8027841, 3.2097454);
+	setInterval(function(){getAPI(50.8027841, 3.2097454)}, 60 * 1000);
 });

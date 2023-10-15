@@ -23,7 +23,7 @@ function _parseMillisecondsIntoReadableTime(timestamp) {
 // 5 TODO: maak updateSun functie
 
 const updateSun = function(aantalMinutenZonOp, totalMinutes){
-	// aantalMinutenZonOp = 660;
+	// aantalMinutenZonOp = 550;
 	// totalMinutes = 600;
 	left = (aantalMinutenZonOp / totalMinutes) * 100;
 	console.info(`${left}%`);
@@ -56,6 +56,9 @@ const updateSun = function(aantalMinutenZonOp, totalMinutes){
 			document.querySelector('.js-time-left').innerHTML = `${uren} hour(s), ${Math.round(minuten)}`;
 		}
 	}
+	const sun = document.querySelector('.js-sun');
+	sun.style.cssText = `bottom: ${bottom}%; left: ${left}%;`
+	sun.setAttribute("data-time", _parseMillisecondsIntoReadableTime(Date.now() / 1000));
 }
 
 // 4 Zet de zon op de juiste plaats en zorg ervoor dat dit iedere minuut gebeurt.
@@ -63,7 +66,6 @@ let placeSunAndStartMoving = (totalMinutes, sunrise) => {
 	// In de functie moeten we eerst wat zaken ophalen en berekenen.
 	// Haal het DOM element van onze zon op en van onze aantal minuten resterend deze dag.
 	// Bepaal het aantal minuten dat de zon al op is.
-	const sun = document.querySelector('.js-sun');
 	const huidigeTijd = Date.now() / 1000;
 	console.info(`Huidige tijd: ${huidigeTijd}`);
 	console.info(`Sunrise: ${sunrise}`);
@@ -74,15 +76,13 @@ let placeSunAndStartMoving = (totalMinutes, sunrise) => {
 	console.info(`Aantal minuten resterend: ${aantalMinutenResterend}`);
 	// Nu zetten we de zon op de initiële goede positie ( met de functie updateSun ). Bereken hiervoor hoeveel procent er van de totale zon-tijd al voorbij is.
 	updateSun(aantalMinutenZonOp, totalMinutes);
+	// setInterval(function(){updateSun(aantalMinutenZonOp, totalMinutes)}, 60 * 1000);
 	// We voegen ook de 'is-loaded' class toe aan de body-tag.
 	// Vergeet niet om het resterende aantal minuten in te vullen.
 	// Nu maken we een functie die de zon elke minuut zal updaten
 	// Bekijk of de zon niet nog onder of reeds onder is
 	// Anders kunnen we huidige waarden evalueren en de zon updaten via de updateSun functie.
 	// PS.: vergeet weer niet om het resterend aantal minuten te updaten en verhoog het aantal verstreken minuten.
-
-	sun.style.cssText = `bottom: ${bottom}%; left: ${left}%;`
-	sun.setAttribute("data-time", _parseMillisecondsIntoReadableTime(Date.now() / 1000));
 };
 
 // 3 Met de data van de API kunnen we de app opvullen

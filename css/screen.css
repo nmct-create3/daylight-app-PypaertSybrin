@@ -2,6 +2,11 @@
 #FONTS
 \*------------------------------------*/
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@font-face {
+    font-family: 'Inter-UI-Regular';
+    src: url("/fonts/Inter-UI-Regular.woff2") format("woff2");
+}
 /*------------------------------------*\
 #Variables
 \*------------------------------------*/
@@ -322,6 +327,7 @@ input::placeholder {
     padding-top: 7px;
     font-size: .75rem;
     line-height: 1.2;
+    font-family: "Inter-UI-Regular", sans-serif;
 }
 
 .c-horizon__sky-wrapper {
@@ -352,6 +358,7 @@ input::placeholder {
     align-items: center;
     width: 40px;
     transform: translateY(50%);
+    font-family: "Inter-UI-Regular", sans-serif;
 }
 /*------------------------------------*\
 #UTILITIES

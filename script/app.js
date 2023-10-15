@@ -23,7 +23,7 @@ function _parseMillisecondsIntoReadableTime(timestamp) {
 // 5 TODO: maak updateSun functie
 
 const updateSun = function(aantalMinutenZonOp, totalMinutes){
-	// aantalMinutenZonOp = 550;
+	// aantalMinutenZonOp = 660;
 	// totalMinutes = 600;
 	left = (aantalMinutenZonOp / totalMinutes) * 100;
 	console.info(`${left}%`);
@@ -40,15 +40,21 @@ const updateSun = function(aantalMinutenZonOp, totalMinutes){
 
 	const resterendeMinuten = totalMinutes - aantalMinutenZonOp;
 
-	const uren = Math.floor(resterendeMinuten / 60);
-	const minuten = resterendeMinuten % 60;
-	console.info(uren);
-	console.info(minuten);
-	if(uren < 1){
-		document.querySelector('.js-time-left').innerHTML = `${minuten}`;
+	if(resterendeMinuten < 0){
+		document.querySelector('.js-time-left').innerHTML = '0';
+		document.getElementsByTagName('html')[0].classList.add('is-night');
 	}
 	else{
-		document.querySelector('.js-time-left').innerHTML = `${uren} hour(s), ${Math.round(minuten)}`;
+		const uren = Math.floor(resterendeMinuten / 60);
+		const minuten = resterendeMinuten % 60;
+		console.info(uren);
+		console.info(minuten);
+		if(uren < 1){
+			document.querySelector('.js-time-left').innerHTML = `${minuten}`;
+		}
+		else{
+			document.querySelector('.js-time-left').innerHTML = `${uren} hour(s), ${Math.round(minuten)}`;
+		}
 	}
 }
 
@@ -100,6 +106,8 @@ let showResult = queryResponse => {
 	const seconds = sunsetSeconds - sunriseSeconds;
 	const totalMinutes = seconds / 60;
 	console.info(totalMinutes);
+
+
 
 	placeSunAndStartMoving(totalMinutes, sunriseSeconds);
 

@@ -40,21 +40,15 @@ const updateSun = function(aantalMinutenZonOp, totalMinutes){
 
 	const resterendeMinuten = totalMinutes - aantalMinutenZonOp;
 
-	if(resterendeMinuten < 0){
-		document.querySelector('.js-time-left').innerHTML = '0';
-		document.getElementsByTagName('html')[0].classList.add('is-night');
+	const uren = Math.floor(resterendeMinuten / 60);
+	const minuten = resterendeMinuten % 60;
+	console.info(uren);
+	console.info(minuten);
+	if(uren < 1){
+		document.querySelector('.js-time-left').innerHTML = `${minuten}`;
 	}
 	else{
-		const uren = Math.floor(resterendeMinuten / 60);
-		const minuten = resterendeMinuten % 60;
-		console.info(uren);
-		console.info(minuten);
-		if(uren < 1){
-			document.querySelector('.js-time-left').innerHTML = `${minuten}`;
-		}
-		else{
-			document.querySelector('.js-time-left').innerHTML = `${uren} hour(s), ${Math.round(minuten)}`;
-		}
+		document.querySelector('.js-time-left').innerHTML = `${uren} hour(s), ${Math.round(minuten)}`;
 	}
 	const sun = document.querySelector('.js-sun');
 	sun.style.cssText = `bottom: ${bottom}%; left: ${left}%;`
@@ -76,6 +70,16 @@ let placeSunAndStartMoving = (totalMinutes, sunrise) => {
 	console.info(`Aantal minuten resterend: ${aantalMinutenResterend}`);
 	// Nu zetten we de zon op de initiële goede positie ( met de functie updateSun ). Bereken hiervoor hoeveel procent er van de totale zon-tijd al voorbij is.
 	updateSun(aantalMinutenZonOp, totalMinutes);
+	let intervalID = setInterval(() => {
+		const tijd = Date.now() / 1000;
+		const minutenZonOp = (tijd - sunrise) / 60;
+		updateSun(minutenZonOp, totalMinutes);
+		if(minutenZonOp > totalMinutes){
+			document.querySelector('.js-time-left').innerHTML = '0';
+			document.getElementsByTagName('html')[0].classList.add('is-night');
+			clearInterval(intervalID);
+		}
+	}, 60 * 1000);
 	// setInterval(function(){updateSun(aantalMinutenZonOp, totalMinutes)}, 60 * 1000);
 	// We voegen ook de 'is-loaded' class toe aan de body-tag.
 	// Vergeet niet om het resterende aantal minuten in te vullen.
@@ -131,5 +135,4 @@ let getAPI = async (lat, lon) => {
 document.addEventListener('DOMContentLoaded', function() {
 	// 1 We will query the API with longitude and latitude.
 	getAPI(50.8027841, 3.2097454);
-	setInterval(function(){getAPI(50.8027841, 3.2097454)}, 60 * 1000);
 });
